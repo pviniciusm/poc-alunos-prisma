@@ -1,10 +1,13 @@
 import { v4 } from "uuid";
+import { Avaliacao } from "./avaliacao.model";
 
 export class Aluno {
     private _id: string;
+    private _avaliacoes: Avaliacao[];
 
     constructor(private _nome: string, private _email: string, private _idade: number, private _password: string) {
         this._id = v4();
+        this._avaliacoes = [];
     }
 
     public get id() {
@@ -13,6 +16,10 @@ export class Aluno {
 
     public get nome() {
         return this._nome;
+    }
+
+    public get avaliacoes() {
+        return this._avaliacoes;
     }
 
     public toJson() {
