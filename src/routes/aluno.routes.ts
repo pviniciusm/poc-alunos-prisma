@@ -1,11 +1,11 @@
 import { Router } from "express";
+import { AlunoController } from "../controllers/aluno.controller";
 
 export const alunoRoutes = () => {
     const router = Router();
+    const controller = new AlunoController();
 
-    router.get("/", (_, res) => {
-        res.send("ok");
-    });
+    router.get("/", controller.list);
 
     return router;
 };
