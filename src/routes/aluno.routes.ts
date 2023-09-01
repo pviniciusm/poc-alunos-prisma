@@ -6,6 +6,7 @@ export const alunoRoutes = () => {
     const controller = new AlunoController();
 
     router.get("/", controller.list);
+    router.post("/", controller.create);
 
     return router;
 };
