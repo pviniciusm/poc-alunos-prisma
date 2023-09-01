@@ -7,6 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Definicao de uma tabela
 model Aluno {
   id String @id @default(uuid()) @db.Uuid
   nome String @db.VarChar(60)
@@ -17,5 +18,17 @@ model Aluno {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
+  // o @@map cria a tabela com um nome especifico
   @@map("aluno")
+}
+
+model Avaliacao {
+  id String @id @default(uuid()) @db.Uuid
+  disciplina String @db.VarChar(30)
+  nota Decimal @db.Decimal(4,2)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("avaliacao")
 }
