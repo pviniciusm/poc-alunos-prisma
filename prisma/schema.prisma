@@ -18,6 +18,9 @@ model Aluno {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
+  // Necessario para estabelecer a relation de Avaliacao para Aluno
+  avaliacoes Avaliacao[]
+
   // o @@map cria a tabela com um nome especifico
   @@map("aluno")
 }
@@ -29,6 +32,12 @@ model Avaliacao {
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Campo que armazena a FK para Aluno
+  idAluno String @db.Uuid @map("id_aluno")
+
+  // Relation para o Aluno (precisa do campo avaliacoes[] em Aluno)
+  aluno Aluno @relation(fields: [idAluno], references: [id])
 
   @@map("avaliacao")
 }
