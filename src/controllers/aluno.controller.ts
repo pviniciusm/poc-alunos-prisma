@@ -79,4 +79,84 @@ export class AlunoController {
             });
         }
     }
+
+    public async update(req: Request, res: Response) {
+        try {
+            const { id } = req.params;
+            const { nome, idade } = req.body;
+
+            const aluno = await repository.aluno.findUnique({
+                where: {
+                    id,
+                },
+            });
+
+            if (!aluno) {
+                return res.status(404).send({
+                    ok: false,
+                    message: "Aluno not found",
+                });
+            }
+
+            aluno.nome = nome ?? aluno.nome;
+            aluno.idade = idade ?? aluno.idade;
+
+            const result = await repository.aluno.update({
+                where: {
+                    id,
+                },
+                data: {
+                    nome: aluno.nome,
+                    idade: aluno.idade,
+                },
+            });
+
+            res.status(200).send({
+                ok: true,
+                data: result,
+                message: "Aluno successfully updated",
+            });
+        } catch (error: any) {
+            res.status(500).send({
+                ok: false,
+                message: error.toString(),
+            });
+        }
+    }
+
+    public async delete(req: Request, res: Response) {
+        try {
+            const { id } = req.params;
+
+            const aluno = await repository.aluno.findUnique({
+                where: {
+                    id,
+                },
+            });
+
+            if (!aluno) {
+                return res.status(404).send({
+                    ok: false,
+                    message: "Aluno not found",
+                });
+            }
+
+            const result = await repository.aluno.delete({
+                where: {
+                    id,
+                },
+            });
+
+            res.status(200).send({
+                ok: true,
+                data: result,
+                message: "Aluno successfully deleted",
+            });
+        } catch (error: any) {
+            res.status(500).send({
+                ok: false,
+                message: error.toString(),
+            });
+        }
+    }
 }
