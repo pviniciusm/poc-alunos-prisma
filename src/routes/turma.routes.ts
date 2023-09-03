@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { AvaliacaoController } from "../controllers";
 import { TurmaController } from "../controllers/turma.controller";
 
 export const turmaRoutes = () => {
