@@ -8,6 +8,7 @@ export const avaliacaoRoutes = () => {
     const controller = new AvaliacaoController();
 
     router.get("/", controller.list);
+    router.post("/", controller.create);
 
     return router;
 };

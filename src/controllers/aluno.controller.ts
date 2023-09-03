@@ -67,7 +67,7 @@ export class AlunoController {
                 },
             });
 
-            res.status(200).send({
+            res.status(201).send({
                 ok: true,
                 data: result,
                 message: "Aluno successfully created",
