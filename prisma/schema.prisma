@@ -18,10 +18,13 @@ model Aluno {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  // Necessario para estabelecer a relation de Avaliacao para Aluno
+  // Relation com avalicao (1-N): um aluno possui 0 ou N avaliacoes
   avaliacoes Avaliacao[]
 
-  // o @@map cria a tabela com um nome especifico
+  // Relation com turma (N-N): um aluno possui 0 ou N turmas (através da tabela auxiliar Matricula)
+  turmas Matricula[]
+
+  // define o nome da tabela (o default é o nome do model com inicial em maiusc.)
   @@map("aluno")
 }
 
@@ -36,8 +39,42 @@ model Avaliacao {
   // Campo que armazena a FK para Aluno
   idAluno String @db.Uuid @map("id_aluno")
 
-  // Relation para o Aluno (precisa do campo avaliacoes[] em Aluno)
+  // Relation com aluno (1-N): uma avaliacao é de apenas 1 aluno
+  // (precisa ter o campo avaliacoes[] em Aluno)
   aluno Aluno @relation(fields: [idAluno], references: [id])
 
+  // define o nome da tabela (o default é o nome do model com inicial em maiusc.)
   @@map("avaliacao")
+}
+
+model Turma {
+  id String @id @default(uuid()) @db.Uuid
+  programa String @db.VarChar(30)
+  edicao Int
+  maxAlunos Int? @map("max_alunos")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relation com aluno (N-N): uma turma possui 0 ou N alunos (através da tabela auxiliar Matricula)
+  alunos Matricula[]
+
+  // define o nome da tabela (o default é o nome do model com inicial em maiusc.)
+  @@map("turma")
+}
+
+// Tabela auxiliar para a relation N-N entre aluno e turma
+model Matricula {
+  aluno Aluno @relation(fields: [alunoId], references: [id])
+  alunoId String @db.Uuid @map("id_aluno")
+
+  Turma Turma @relation(fields: [turmaId], references: [id])
+  turmaId String @db.Uuid @map("turma_id")
+
+  ativo Boolean @default(true)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@id([alunoId, turmaId])
 }
