@@ -5,7 +5,12 @@ export class Aluno {
     private _id: string;
     private _avaliacoes: Avaliacao[];
 
-    constructor(private _nome: string, private _email: string, private _idade: number, private _password: string) {
+    constructor(
+        private _nome: string,
+        private _email: string,
+        private _idade: number,
+        private _password: string
+    ) {
         this._id = v4();
         this._avaliacoes = [];
     }
@@ -29,5 +34,18 @@ export class Aluno {
             email: this._email,
             idade: this._idade,
         };
+    }
+
+    public static create(
+        id: string,
+        nome: string,
+        email: string,
+        idade: number,
+        password: string
+    ) {
+        const aluno = new Aluno(nome, email, idade, password);
+        aluno._id = id;
+
+        return aluno;
     }
 }

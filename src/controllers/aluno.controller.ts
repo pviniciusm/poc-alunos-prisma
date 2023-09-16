@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 
 import repository from "../database/prisma.connection";
 import { Aluno } from "../models/aluno.model";
+import { AlunoService } from "../services/aluno.service";
 
 /**
  * Controller com todas as ações a respeito de alunos.
@@ -11,26 +12,12 @@ export class AlunoController {
         try {
             const { nome } = req.query;
 
-            // Lista todos os alunos do banco de dados
-            const result = await repository.aluno.findMany({
-                // Filtro com where
-                where: {
-                    nome: nome?.toString(),
-                },
-                // Define quais os campos serão selecionados
-                select: {
-                    password: false,
-                    id: true,
-                    nome: true,
-                    email: true,
-                    idade: true,
-                    createdAt: true,
-                },
-            });
+            const service = new AlunoService();
+            const result = await service.findAll(nome as string);
 
             res.status(200).send({
                 ok: true,
-                data: result,
+                data: result.map((item) => item.toJson()),
             });
         } catch (error: any) {
             res.status(500).send({
