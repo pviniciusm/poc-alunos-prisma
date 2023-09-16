@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import repository from "../database/prisma.connection";
 import { Aluno } from "../models/aluno.model";
 import { AlunoService } from "../services/aluno.service";
+import { v4 as createToken } from "uuid";
 
 /**
  * Controller com todas as ações a respeito de alunos.
@@ -138,6 +139,38 @@ export class AlunoController {
                 ok: true,
                 data: result,
                 message: "Aluno successfully deleted",
+            });
+        } catch (error: any) {
+            res.status(500).send({
+                ok: false,
+                message: error.toString(),
+            });
+        }
+    }
+
+    public async login(req: Request, res: Response) {
+        try {
+            const { email, password } = req.body;
+
+            if (!email || !password) {
+                return res.status(400).send({
+                    ok: false,
+                    message: "Fields not provided",
+                });
+            }
+
+            const token = await new AlunoService().login(email, password);
+            if (!token) {
+                return res.status(401).send({
+                    ok: false,
+                    message: "Invalid credentials",
+                });
+            }
+
+            return res.status(200).send({
+                ok: true,
+                token,
+                message: "Login successfully done",
             });
         } catch (error: any) {
             res.status(500).send({
