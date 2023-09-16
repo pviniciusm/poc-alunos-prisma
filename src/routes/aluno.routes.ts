@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { AlunoController } from "../controllers";
 import { avaliacaoRoutes } from "./avaliacao.routes";
+import { authMiddleware } from "../middlewares/auth.middleware";
 
 export const alunoRoutes = () => {
     const router = Router();
@@ -8,7 +9,7 @@ export const alunoRoutes = () => {
 
     router.get("/", controller.list);
     router.post("/", controller.create);
-    router.put("/:id", controller.update);
+    router.put("/:id", [authMiddleware], controller.update);
     router.delete("/:id", controller.delete);
     router.post("/login", controller.login);
 
