@@ -4,6 +4,7 @@ import repository from "../database/prisma.connection";
 import { Aluno } from "../models/aluno.model";
 import { AlunoService } from "../services/aluno.service";
 import { v4 as createToken } from "uuid";
+import { AuthService } from "../services/auth.service";
 
 /**
  * Controller com todas as ações a respeito de alunos.
@@ -159,7 +160,7 @@ export class AlunoController {
                 });
             }
 
-            const token = await new AlunoService().login(email, password);
+            const token = await new AuthService().login(email, password);
             if (!token) {
                 return res.status(401).send({
                     ok: false,

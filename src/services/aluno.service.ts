@@ -1,4 +1,3 @@
-import { v4 as createToken } from "uuid";
 import repository from "../database/prisma.connection";
 import { Aluno } from "../models";
 
@@ -22,34 +21,6 @@ export class AlunoService {
         });
 
         return result.map((item) => this.mapToModel(item));
-    }
-
-    public async login(email: string, password: string) {
-        const result = await repository.aluno.findUnique({
-            where: {
-                email,
-                password,
-            },
-        });
-
-        console.log(result);
-
-        if (!result) {
-            return null;
-        }
-
-        const token = createToken();
-
-        await repository.aluno.update({
-            where: {
-                id: result.id,
-            },
-            data: {
-                authToken: token,
-            },
-        });
-
-        return token;
     }
 
     public mapToModel(aluno: any) {
