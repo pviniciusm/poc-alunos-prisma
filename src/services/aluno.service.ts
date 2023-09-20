@@ -86,6 +86,32 @@ export class AlunoService {
         };
     }
 
+    public async delete(id: string): Promise<Result> {
+        const aluno = await repository.aluno.findUnique({
+            where: {
+                id,
+            },
+        });
+
+        if (!aluno) {
+            return {
+                code: 404,
+                message: "Aluno not found",
+            };
+        }
+
+        await repository.aluno.delete({
+            where: {
+                id,
+            },
+        });
+
+        return {
+            code: 200,
+            message: "Aluno successfully deleted",
+        };
+    }
+
     public mapToModel(aluno: any) {
         return Aluno.create(
             aluno.id,

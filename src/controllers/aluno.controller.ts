@@ -76,30 +76,9 @@ export class AlunoController {
         try {
             const { id } = req.params;
 
-            const aluno = await repository.aluno.findUnique({
-                where: {
-                    id,
-                },
-            });
+            const result = await new AlunoService().delete(id);
 
-            if (!aluno) {
-                return res.status(404).send({
-                    ok: false,
-                    message: "Aluno not found",
-                });
-            }
-
-            const result = await repository.aluno.delete({
-                where: {
-                    id,
-                },
-            });
-
-            res.status(200).send({
-                ok: true,
-                data: result,
-                message: "Aluno successfully deleted",
-            });
+            res.status(result.code).send(result);
         } catch (error: any) {
             res.status(500).send({
                 ok: false,
