@@ -119,19 +119,9 @@ export class AlunoController {
                 });
             }
 
-            const token = await new AuthService().login(email, password);
-            if (!token) {
-                return res.status(401).send({
-                    ok: false,
-                    message: "Invalid credentials",
-                });
-            }
+            const result = await new AuthService().login(email, password);
 
-            return res.status(200).send({
-                ok: true,
-                token,
-                message: "Login successfully done",
-            });
+            res.status(result.code).send(result);
         } catch (error: any) {
             res.status(500).send({
                 ok: false,

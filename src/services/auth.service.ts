@@ -1,8 +1,9 @@
+import { Result } from "../contracts/service.contract";
 import repository from "../database/prisma.connection";
 import { v4 as createToken } from "uuid";
 
 export class AuthService {
-    public async login(email: string, password: string) {
+    public async login(email: string, password: string): Promise<Result> {
         const result = await repository.aluno.findUnique({
             where: {
                 email,
@@ -10,10 +11,11 @@ export class AuthService {
             },
         });
 
-        console.log(result);
-
         if (!result) {
-            return null;
+            return {
+                code: 401,
+                message: "Invalid credentials",
+            };
         }
 
         const token = createToken();
@@ -27,7 +29,11 @@ export class AuthService {
             },
         });
 
-        return token;
+        return {
+            code: 200,
+            message: "Login successfuly done",
+            data: token,
+        };
     }
 
     public async validateToken(token: string): Promise<boolean> {
