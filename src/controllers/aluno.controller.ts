@@ -43,11 +43,7 @@ export class AlunoController {
 
             const result = await new AlunoService().create(req.body);
 
-            res.status(201).send({
-                ok: true,
-                data: result,
-                message: "Aluno successfully created",
-            });
+            res.status(result.code).send(result);
         } catch (error: any) {
             res.status(500).send({
                 ok: false,
@@ -61,24 +57,13 @@ export class AlunoController {
             const { id } = req.params;
             const { nome, idade } = req.body;
 
-            const result = new AlunoService().update({
+            const result = await new AlunoService().update({
                 id,
                 nome,
                 idade,
             });
 
-            if (!result) {
-                return res.status(404).send({
-                    ok: false,
-                    message: "Aluno not found",
-                });
-            }
-
-            res.status(200).send({
-                ok: true,
-                data: result,
-                message: "Aluno successfully updated",
-            });
+            res.status(result.code).send(result);
         } catch (error: any) {
             res.status(500).send({
                 ok: false,

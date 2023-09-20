@@ -1,4 +1,5 @@
 import { CreateAlunoDTO, UpdateAlunoDTO } from "../contracts/aluno.contract";
+import { Result } from "../contracts/service.contract";
 import repository from "../database/prisma.connection";
 import { Aluno } from "../models";
 
@@ -24,7 +25,7 @@ export class AlunoService {
         return result.map((item) => this.mapToModel(item));
     }
 
-    public async create(params: CreateAlunoDTO) {
+    public async create(params: CreateAlunoDTO): Promise<Result> {
         // Cria um novo aluno (model)
         const aluno = new Aluno(
             params.nome,
@@ -44,10 +45,14 @@ export class AlunoService {
             },
         });
 
-        return aluno.toJson();
+        return {
+            code: 201,
+            message: "Aluno successfully created",
+            data: aluno.toJson(),
+        };
     }
 
-    public async update(params: UpdateAlunoDTO) {
+    public async update(params: UpdateAlunoDTO): Promise<Result> {
         const aluno = await repository.aluno.findUnique({
             where: {
                 id: params.id,
@@ -55,7 +60,10 @@ export class AlunoService {
         });
 
         if (!aluno) {
-            return null;
+            return {
+                code: 404,
+                message: "Aluno not found",
+            };
         }
 
         aluno.nome = params.nome ?? aluno.nome;
@@ -71,7 +79,11 @@ export class AlunoService {
             },
         });
 
-        return this.mapToModel(aluno).toJson();
+        return {
+            code: 200,
+            message: "Aluno sucessfully updated",
+            data: this.mapToModel(aluno).toJson(),
+        };
     }
 
     public mapToModel(aluno: any) {
