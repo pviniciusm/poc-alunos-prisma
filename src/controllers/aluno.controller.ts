@@ -3,7 +3,6 @@ import { Request, Response } from "express";
 import repository from "../database/prisma.connection";
 import { Aluno } from "../models/aluno.model";
 import { AlunoService } from "../services/aluno.service";
-import { v4 as createToken } from "uuid";
 import { AuthService } from "../services/auth.service";
 
 /**
@@ -42,19 +41,7 @@ export class AlunoController {
                 });
             }
 
-            // Cria um novo aluno (model)
-            const aluno = new Aluno(nome, email, idade, password);
-
-            // Salva o aluno no banco de dados usando o Prisma
-            const result = await repository.aluno.create({
-                data: {
-                    email,
-                    nome,
-                    password,
-                    id: aluno.id,
-                    idade,
-                },
-            });
+            const result = await new AlunoService().create(req.body);
 
             res.status(201).send({
                 ok: true,
@@ -74,31 +61,18 @@ export class AlunoController {
             const { id } = req.params;
             const { nome, idade } = req.body;
 
-            const aluno = await repository.aluno.findUnique({
-                where: {
-                    id,
-                },
+            const result = new AlunoService().update({
+                id,
+                nome,
+                idade,
             });
 
-            if (!aluno) {
+            if (!result) {
                 return res.status(404).send({
                     ok: false,
                     message: "Aluno not found",
                 });
             }
-
-            aluno.nome = nome ?? aluno.nome;
-            aluno.idade = idade ?? aluno.idade;
-
-            const result = await repository.aluno.update({
-                where: {
-                    id,
-                },
-                data: {
-                    nome: aluno.nome,
-                    idade: aluno.idade,
-                },
-            });
 
             res.status(200).send({
                 ok: true,
