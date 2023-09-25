@@ -32,7 +32,10 @@ export class AuthService {
         return {
             code: 200,
             message: "Login successfuly done",
-            data: token,
+            data: {
+                id: result.id,
+                token,
+            },
         };
     }
 

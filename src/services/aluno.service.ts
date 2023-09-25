@@ -35,12 +35,12 @@ export class AlunoService {
         );
 
         // Salva o aluno no banco de dados usando o Prisma
-        await repository.aluno.create({
+        const createdAluno = await repository.aluno.create({
             data: {
                 email: params.email,
                 nome: params.nome,
                 password: params.password,
-                id: aluno.id,
+                // id: aluno.id,
                 idade: params.idade,
             },
         });
@@ -48,7 +48,7 @@ export class AlunoService {
         return {
             code: 201,
             message: "Aluno successfully created",
-            data: aluno.toJson(),
+            data: this.mapToModel(createdAluno).toJson(),
         };
     }
 
@@ -113,12 +113,12 @@ export class AlunoService {
     }
 
     public mapToModel(aluno: any) {
-        return Aluno.create(
-            aluno.id,
+        return new Aluno(
             aluno.nome,
             aluno.email,
             aluno.idade,
-            aluno.password
+            aluno.password,
+            aluno.id
         );
     }
 }
