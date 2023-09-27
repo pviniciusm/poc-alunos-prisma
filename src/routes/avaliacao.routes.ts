@@ -9,6 +9,8 @@ export const avaliacaoRoutes = () => {
 
     router.get("/", controller.list);
     router.post("/", controller.create);
+    router.put("/:idAvaliacao", controller.update);
+    router.delete("/:idAvaliacao", controller.delete);
 
     return router;
 };
