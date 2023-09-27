@@ -1,4 +1,4 @@
-import { Result } from "../contracts/service.contract";
+import { Result } from "../dtos/service.contract";
 import repository from "../database/prisma.connection";
 import { v4 as createToken } from "uuid";
 
