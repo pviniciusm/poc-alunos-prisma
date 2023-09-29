@@ -1,5 +1,5 @@
-import { CreateAlunoDTO, UpdateAlunoDTO } from "../dtos/aluno.contract";
-import { Result } from "../dtos/service.contract";
+import { CreateAlunoDTO, UpdateAlunoDTO } from "../dtos/aluno.dto";
+import { Result } from "../dtos/service.dto";
 import repository from "../database/prisma.connection";
 import { Aluno } from "../models";
 

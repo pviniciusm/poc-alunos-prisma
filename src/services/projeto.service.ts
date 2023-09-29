@@ -1,12 +1,7 @@
 import repository from "../database/prisma.connection";
-import { Result } from "../dtos/service.contract";
+import { CreateProjetoDto } from "../dtos/projeto.dto";
+import { Result } from "../dtos/service.dto";
 import { Projeto } from "../models/projeto.model";
-
-interface CreateProjetoDto {
-    descricao: string;
-    ferramenta: string;
-    alunoId: string;
-}
 
 export class ProjetoService {
     public async create(params: CreateProjetoDto): Promise<Result> {
