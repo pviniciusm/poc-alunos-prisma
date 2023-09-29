@@ -5,7 +5,6 @@ generator client {
 datasource db {
   provider                = "postgresql"
   url                     = env("DATABASE_URL")
-  shadowDatabaseUrl       = env("DATABASE_URL")
 }
 
 // Definicao de uma tabela
@@ -25,6 +24,9 @@ model Aluno {
 
   // Relation com turma (N-N): um aluno possui 0 ou N turmas (através da tabela auxiliar Matricula)
   turmas Matricula[]
+
+  // Relation com projeto
+  projetos Projeto[]
 
   // define o nome da tabela (o default é o nome do model com inicial em maiusc.)
   @@map("aluno")
@@ -79,4 +81,17 @@ model Matricula {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@id([alunoId, turmaId])
+}
+
+model Projeto {
+  id String @id @default(uuid()) @db.Uuid 
+  descricao String
+  ferramenta String
+  status String @db.Char(1)
+
+  alunoId String @db.Uuid @map("id_aluno")
+  aluno Aluno @relation(fields: [alunoId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at") 
 }
