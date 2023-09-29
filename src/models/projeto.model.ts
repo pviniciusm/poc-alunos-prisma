@@ -7,6 +7,10 @@ export class Projeto {
         private _status: string
     ) {}
 
+    public get status() {
+        return this._status;
+    }
+
     public toJson() {
         return {
             id: this.id,
