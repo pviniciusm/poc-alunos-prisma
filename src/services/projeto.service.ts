@@ -59,7 +59,7 @@ export class ProjetoService {
         return {
             code: 200,
             message: "Projetos listados com sucesso",
-            data: result.map((item) => this.mapToModel(item)),
+            data: result.map((item) => this.mapToModel(item).toJson()),
         };
     }
 
