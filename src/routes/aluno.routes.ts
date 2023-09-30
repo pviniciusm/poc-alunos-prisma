@@ -2,6 +2,7 @@ import { Router } from "express";
 import { AlunoController } from "../controllers";
 import { avaliacaoRoutes } from "./avaliacao.routes";
 import { authMiddleware } from "../middlewares/auth.middleware";
+import { projetoRoutes } from "./projeto.routes";
 
 export const alunoRoutes = () => {
     const router = Router();
@@ -14,6 +15,7 @@ export const alunoRoutes = () => {
     router.post("/login", controller.login);
 
     router.use("/:idAluno/avaliacao", avaliacaoRoutes());
+    router.use("/:alunoId/projeto", projetoRoutes());
 
     return router;
 };
