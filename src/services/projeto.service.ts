@@ -37,6 +37,19 @@ export class ProjetoService {
     }
 
     public async list(alunoId: string): Promise<Result> {
+        const aluno = await repository.aluno.findFirst({
+            where: {
+                id: alunoId,
+            },
+        });
+
+        if (!aluno) {
+            return {
+                code: 404,
+                message: "Aluno not found",
+            };
+        }
+
         const result = await repository.projeto.findMany({
             where: {
                 alunoId,
