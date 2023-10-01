@@ -10,6 +10,7 @@ export const projetoRoutes = () => {
     router.get("/", controller.list);
     router.post("/", controller.create);
     router.delete("/:id", controller.delete);
+    router.put("/:id", controller.update);
 
     return router;
 };

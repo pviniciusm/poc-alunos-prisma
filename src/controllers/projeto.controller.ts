@@ -62,4 +62,20 @@ export class ProjetoController {
             });
         }
     }
+
+    public async update(req: Request, res: Response) {
+        try {
+            const { alunoId, id } = req.params;
+
+            const service = new ProjetoService();
+            const result = await service.update({ alunoId, id, ...req.body });
+
+            res.status(result.code).send(result);
+        } catch (error: any) {
+            res.status(500).send({
+                ok: false,
+                message: error.toString(),
+            });
+        }
+    }
 }
