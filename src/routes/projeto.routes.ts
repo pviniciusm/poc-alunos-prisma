@@ -9,6 +9,7 @@ export const projetoRoutes = () => {
 
     router.get("/", controller.list);
     router.post("/", controller.create);
+    router.delete("/:id", controller.delete);
 
     return router;
 };

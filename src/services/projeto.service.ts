@@ -1,5 +1,5 @@
 import repository from "../database/prisma.connection";
-import { CreateProjetoDto } from "../dtos/projeto.dto";
+import { CreateProjetoDto, DeleteProjetoDto } from "../dtos/projeto.dto";
 import { Result } from "../dtos/service.dto";
 import { Projeto } from "../models/projeto.model";
 
@@ -60,6 +60,47 @@ export class ProjetoService {
             code: 200,
             message: "Projetos listados com sucesso",
             data: result.map((item) => this.mapToModel(item).toJson()),
+        };
+    }
+
+    public async delete(params: DeleteProjetoDto): Promise<Result> {
+        // Verifica se o user existe
+        const aluno = await repository.aluno.findFirst({
+            where: {
+                id: params.alunoId,
+            },
+        });
+
+        if (!aluno) {
+            return {
+                code: 404,
+                message: "Aluno not found",
+            };
+        }
+
+        // Verifica se o projeto existe
+        const projeto = await repository.projeto.findFirst({
+            where: {
+                id: params.id,
+            },
+        });
+
+        if (!projeto) {
+            return {
+                code: 404,
+                message: "Projeto not found",
+            };
+        }
+
+        await repository.projeto.delete({
+            where: {
+                id: params.id,
+            },
+        });
+
+        return {
+            code: 200,
+            message: "Projeto sucessfully deleted",
         };
     }
 

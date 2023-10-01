@@ -46,4 +46,20 @@ export class ProjetoController {
             });
         }
     }
+
+    public async delete(req: Request, res: Response) {
+        try {
+            const { alunoId, id } = req.params;
+
+            const service = new ProjetoService();
+            const result = await service.delete({ alunoId, id });
+
+            res.status(result.code).send(result);
+        } catch (error: any) {
+            res.status(500).send({
+                ok: false,
+                message: error.toString(),
+            });
+        }
+    }
 }
