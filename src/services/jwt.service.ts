@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken";
-import * as dotenv from "dotenv";
 
 class JwtService {
     public create(payload: any) {
@@ -16,3 +15,5 @@ class JwtService {
         return JSON.parse(decoded as string);
     }
 }
+
+export default new JwtService();

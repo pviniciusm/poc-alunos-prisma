@@ -1,6 +1,6 @@
 import { Result } from "../dtos/service.dto";
 import repository from "../database/prisma.connection";
-import { v4 as createToken } from "uuid";
+import jwtService from "./jwt.service";
 
 export class AuthService {
     public async login(email: string, password: string): Promise<Result> {
@@ -18,15 +18,9 @@ export class AuthService {
             };
         }
 
-        const token = createToken();
-
-        await repository.aluno.update({
-            where: {
-                id: result.id,
-            },
-            data: {
-                authToken: token,
-            },
+        const token = jwtService.create({
+            id: result.id,
+            nome: result.nome,
         });
 
         return {
@@ -37,15 +31,5 @@ export class AuthService {
                 token,
             },
         };
-    }
-
-    public async validateToken(token: string): Promise<boolean> {
-        const user = await repository.aluno.findFirst({
-            where: {
-                authToken: token,
-            },
-        });
-
-        return !!user;
     }
 }

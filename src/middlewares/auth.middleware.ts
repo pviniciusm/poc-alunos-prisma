@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { AuthService } from "../services/auth.service";
+import jwtService from "../services/jwt.service";
 
 export async function authMiddleware(
     req: Request,
@@ -16,7 +17,7 @@ export async function authMiddleware(
             });
         }
 
-        const tokenIsValid = await new AuthService().validateToken(token);
+        const tokenIsValid = jwtService.validate(token);
         if (!tokenIsValid) {
             return res.status(401).send({
                 ok: false,
