@@ -6,13 +6,17 @@ class JwtService {
     }
 
     public validate(token: string) {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+        try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET!);
 
-        if (!decoded) {
+            if (!decoded) {
+                return null;
+            }
+
+            return decoded;
+        } catch {
             return null;
         }
-
-        return JSON.parse(decoded as string);
     }
 }
 

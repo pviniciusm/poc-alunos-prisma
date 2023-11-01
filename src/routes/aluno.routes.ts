@@ -15,7 +15,7 @@ export const alunoRoutes = () => {
     router.post("/login", controller.login);
 
     router.use("/:idAluno/avaliacao", avaliacaoRoutes());
-    router.use("/:alunoId/projeto", projetoRoutes());
+    router.use("/:alunoId/projeto", [authMiddleware], projetoRoutes());
 
     return router;
 };

@@ -8,16 +8,16 @@ export async function authMiddleware(
     next: NextFunction
 ) {
     try {
-        const { token } = req.body;
+        const { authorization } = req.headers;
 
-        if (!token) {
+        if (!authorization) {
             return res.status(401).send({
                 ok: false,
                 message: "Authentication token not provided",
             });
         }
 
-        const tokenIsValid = jwtService.validate(token);
+        const tokenIsValid = jwtService.validate(authorization);
         if (!tokenIsValid) {
             return res.status(401).send({
                 ok: false,
